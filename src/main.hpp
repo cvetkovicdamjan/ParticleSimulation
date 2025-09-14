@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 
+#include "RigidBody.h"
 #include <util/utilityCore.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

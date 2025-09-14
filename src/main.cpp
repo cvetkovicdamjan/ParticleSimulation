@@ -3,18 +3,67 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#define GRID_LENGTH_DEFAULT (0.273438f)
+
+//#define OBJ_ARR_SIZE 9
+#define OBJ_ARR_SIZE 3
+
+#define GRAVITY (glm::vec3(0.0f,-9.8f,0.0f))
+#define FPS 60.0f
+#define FRAME_TIME 1.0f/FPS
+#define SIMU_STEP 10
+#define DELTA_T FRAME_TIME/SIMU_STEP
+
+//-------------------------------
+//-------------MAIN--------------
+//-------------------------------
+
+RigidBody rigid_body[OBJ_ARR_SIZE];
+float uniform_grid_length;
+GLfloat *v_buffer_ptr;
+int buffer_size;
 int main(int argc, char **argv)
 {
-    // if(argc < 2) {
-    //     cout << "Usage [obj file]" << endl;
-    //     return 0;
-    // }
+    if(argc < 2) {
+        cout << "Usage [obj file]" << endl;
+        return 0;
+    }
 
     frame = 0;
 	seconds = time(NULL);
 	fpstracker = 0;
 
 	if (samplingTest_Init()) {
+
+    	// Rigid body Suzanne
+    	rigid_body[0].setPhase(0);
+    	rigid_body[0].setTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+    	rigid_body[0].setRotation(glm::rotate(ones_matrix, 5.0f*(float)PI/180.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
+    	// rigid_body[0].setInitVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+    	rigid_body[0].setInitVelocity(glm::vec3(0.0f, 9.8f, 0.0f));
+    	rigid_body[0].setMassScale(1.0f);
+    	rigid_body[0].setType(SOLID);
+    	rigid_body[0].setColor(glm::vec4(0.0f, 0.5f, 1.0f, 1.0f));
+    	rigid_body[0].initObj(argv[1]);
+    	rigid_body[0].initParticles(10);
+
+	 //    int c = 0;
+		// uniform_grid_length = GRID_LENGTH_DEFAULT;
+		// // water fill
+		// c = 0;
+		// rigid_body[c].setPhase(c);
+
+		// rigid_body[c].setTranslate(glm::vec3(-4.0f, 8.0f, 0.0f));
+		// //rigid_body[c].setTranslate(glm::vec3(1.0f, 5.0f, 0.0f));
+		// //rigid_body[c].setRotation(glm::rotate(5.0f*(float)PI / 180.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
+		// rigid_body[c].setInitVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+		// //rigid_body[c].setInitVelocity(glm::vec3(0.0f, 9.8f, 0.0f));
+		// rigid_body[c].setMassScale(1.0f);
+		// rigid_body[c].setType(SOLID);
+		// rigid_body[c].setColor(glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
+		// rigid_body[c].initObj(argv[1]);
+		// rigid_body[c].initParticles(uniform_grid_length);
+
 	    samplingTest_Loop();
 	}
 
